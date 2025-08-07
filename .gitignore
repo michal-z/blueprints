@@ -1,0 +1,21 @@
+# Ignore all files by default, but scan all directories
+*
+!*/
+
+!*.zig
+!*.hlsl
+!*.h
+!LICENSE*
+!*.md
+!*.png
+
+!.ignore
+!.gitkeep
+!.gitignore
+!.gitattributes
+
+!bin/**
+
+# Ignore some special directories
+.zig-cache
+zig-out
