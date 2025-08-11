@@ -3,6 +3,9 @@
 *.lib
 *.exe
 *.cso
+*.dll
+*.ifc
+*.obj
 imgui.ini
 
 !bin/**

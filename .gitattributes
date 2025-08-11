@@ -9,4 +9,4 @@
 *.png binary
 *.flac binary
 
-src/precomp/** linguist-vendored
+src/external/** linguist-vendored
