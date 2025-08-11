@@ -1,8 +1,5 @@
 * text=auto
-
-*.zig text
-
-* text eol=lf
+*.* text eol=crlf
 
 *.exe binary
 *.obj binary
@@ -11,3 +8,5 @@
 *.dll binary
 *.png binary
 *.flac binary
+
+src/precomp/** linguist-vendored
