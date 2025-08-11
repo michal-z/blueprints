@@ -28,7 +28,7 @@ if exist "*.ifc" del "*.ifc"
 :: imgui
 ::
 if exist imgui.lib goto imgui_end
-cl %CFLAGS% /c "src/external/imgui/*.cpp" /I "src/external/imgui" /Fd:"imgui.pdb"
+cl %CFLAGS% /MP /c "src/external/imgui/*.cpp" /I "src/external/imgui" /Fd:"imgui.pdb"
 lib.exe /NOLOGO *.obj /OUT:"imgui.lib"
 if exist *.obj del *.obj
 :imgui_end
