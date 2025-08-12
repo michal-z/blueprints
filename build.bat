@@ -41,25 +41,26 @@ cl %CFLAGS% /c "%VCToolsInstallDir%\modules\std.ixx" /Fd:"std.pdb"
 :std_end
 
 ::
-:: external
+:: base
 ::
-if exist external.h.ifc goto external_end
-cl %CFLAGS% /exportHeader "src/external.h" /I "src/external" /Fd:"external.pdb"
-:external_end
+if exist base.h.ifc goto base_end
+cl %CFLAGS% /exportHeader "src/base.h" /I "src/external" /Fd:"base.pdb"
+:base_end
 
 ::
 :: game
 ::
 set SRC=^
+src\lib.ixx ^
 src\gpu.ixx ^
 src\main.cpp
 
 cl ^
-%CFLAGS% /Fe:"%NAME%.exe" /Fd:"%NAME%.pdb" /headerUnit "src/external.h=external.h.ifc" %SRC% ^
+%CFLAGS% /Fe:"%NAME%.exe" /Fd:"%NAME%.pdb" /headerUnit "src/base.h=base.h.ifc" %SRC% ^
 /link ^
-%LFLAGS% kernel32.lib user32.lib dxgi.lib imgui.lib std.obj /subsystem:CONSOLE
+%LFLAGS% kernel32.lib user32.lib ole32.lib dxgi.lib imgui.lib std.obj /subsystem:CONSOLE
 
-:: Delete .obj and .ifc files (all except std.obj, std.ifc and external.h.ifc)
+:: Delete .obj and .ifc files (all except std.obj, std.ifc and base.h.ifc)
 for %%f in (%SRC%) do if exist %%~nf.* del %%~nf.*
 
 if "%1"=="run" if exist "%NAME%.exe" "%NAME%.exe"

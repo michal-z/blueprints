@@ -1,4 +1,4 @@
-import "external.h";
+import "base.h";
 import std;
 import gpu;
 
@@ -7,20 +7,71 @@ extern "C" {
   __declspec(dllexport) extern const char* D3D12SDKPath = ".\\bin\\";
 }
 
+static LRESULT CALLBACK window_handle_event(HWND hwnd, UINT message, WPARAM wparam, LPARAM lparam)
+{
+  switch (message) {
+    case WM_DESTROY: {
+      PostQuitMessage(0);
+      return 0;
+    } break;
+    case WM_KEYDOWN: {
+      if (wparam == VK_ESCAPE) {
+        PostQuitMessage(0);
+        return 0;
+      }
+    } break;
+  }
+  return DefWindowProcA(hwnd, message, wparam, lparam);
+}
+
+static HWND window_create(const char* name, int width, int height)
+{
+  const WNDCLASSA winclass = {
+    .lpfnWndProc = window_handle_event,
+    .hInstance = GetModuleHandle(nullptr),
+    .hCursor = LoadCursor(nullptr, IDC_ARROW),
+    .lpszClassName = name,
+  };
+  RegisterClass(&winclass);
+
+  const DWORD style = WS_OVERLAPPEDWINDOW;
+
+  RECT rect = { 0, 0, width, height };
+  AdjustWindowRectEx(&rect, style, FALSE, 0);
+
+  const HWND window = CreateWindowEx(0, name, name, style | WS_VISIBLE, CW_USEDEFAULT, CW_USEDEFAULT, rect.right - rect.left, rect.bottom - rect.top, nullptr, nullptr, nullptr, nullptr);
+
+  if (window == NULL) {
+    VHR(HRESULT_FROM_WIN32(GetLastError()));
+  }
+
+  return window;
+}
+
 int main()
 {
-  gpu::Context gpu = gpu::init({
+  CoInitializeEx(nullptr, COINIT_MULTITHREADED);
+  SetProcessDPIAware();
+
+  const HWND window = window_create("blueprints", 1920, 1080);
+
+  gpu::context gpuctx = gpu::init({
+    .window = window,
     .num_msaa_samples = 2,
     .ds_target_format = DXGI_FORMAT_R8_UNORM});
 
-#if 1
-  std::cout << "Import the STL library for best performance\n";
-  std::vector<int> v{5, 5, 5};
-  for (const auto& e : v)
-  {
-    std::cout << e;
+  bool running = true;
+  while (running) {
+    MSG msg = {};
+    while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
+      if (msg.message == WM_QUIT)
+        running = false;
+      TranslateMessage(&msg);
+      DispatchMessage(&msg);
+    }
+    Sleep(1);
   }
-#endif
 
+  CoUninitialize();
   return 0;
 }
