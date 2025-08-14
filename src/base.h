@@ -20,6 +20,12 @@
 #define IDXGIFactoryN IDXGIFactory7
 #define IDXGIAdapterN IDXGIAdapter4
 
+#define ID3D12DebugN ID3D12Debug6
+#define ID3D12DebugDeviceN ID3D12DebugDevice2
+#define ID3D12DebugCommandQueueN ID3D12DebugCommandQueue1
+#define ID3D12DebugCommandListN ID3D12DebugCommandList3
+#define ID3D12InfoQueueN ID3D12InfoQueue1
+
 #define LOG(...) do \
 { \
   fprintf(stderr, __VA_ARGS__); \
@@ -32,5 +38,13 @@
     LOG("[%s()] HRESULT error detected (0x%lX)", __FUNCTION__, r); \
     assert(false); \
     ExitProcess(1); \
+  } \
+} while(0)
+
+#define SAFE_RELEASE(obj) do \
+{ \
+  if ((obj)) { \
+    (obj)->Release(); \
+    (obj) = nullptr; \
   } \
 } while(0)

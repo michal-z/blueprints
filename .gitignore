@@ -6,6 +6,9 @@
 *.dll
 *.ifc
 *.obj
+*.rdi
 imgui.ini
 
-!bin/**
+!bin/*.dll
+!bin/*.pdb
+!bin/*.exe

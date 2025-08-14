@@ -28,10 +28,19 @@ if exist "*.ifc" del "*.ifc"
 :: imgui
 ::
 if exist imgui.lib goto imgui_end
-cl %CFLAGS% /MP /c "src/external/imgui/*.cpp" /I "src/external/imgui" /Fd:"imgui.pdb"
+cl %CFLAGS% /MP /c "src/external/imgui/*.cpp" /Fd:"imgui.pdb"
 lib.exe /NOLOGO *.obj /OUT:"imgui.lib"
 if exist *.obj del *.obj
 :imgui_end
+
+::
+:: d3dx12
+::
+if exist d3dx12.lib goto d3dx12_end
+cl %CFLAGS% /MP /c "src/external/d3dx12/*.cpp" /Fd:"d3dx12.pdb"
+lib.exe /NOLOGO *.obj /OUT:"d3dx12.lib"
+if exist *.obj del *.obj
+:d3dx12_end
 
 ::
 :: std
@@ -58,7 +67,7 @@ src\main.cpp
 cl ^
 %CFLAGS% /Fe:"%NAME%.exe" /Fd:"%NAME%.pdb" /headerUnit "src/base.h=base.h.ifc" %SRC% ^
 /link ^
-%LFLAGS% kernel32.lib user32.lib ole32.lib dxgi.lib imgui.lib std.obj /subsystem:CONSOLE
+%LFLAGS% kernel32.lib user32.lib d3d12.lib ole32.lib dxgi.lib std.obj imgui.lib d3dx12.lib /subsystem:CONSOLE
 
 :: Delete .obj and .ifc files (all except std.obj, std.ifc and base.h.ifc)
 for %%f in (%SRC%) do if exist %%~nf.* del %%~nf.*

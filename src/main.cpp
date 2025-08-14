@@ -3,7 +3,7 @@ import std;
 import gpu;
 
 extern "C" {
-  __declspec(dllexport) extern const UINT D3D12SDKVersion = 616;
+  __declspec(dllexport) extern const UINT D3D12SDKVersion = D3D12_SDK_VERSION;
   __declspec(dllexport) extern const char* D3D12SDKPath = ".\\bin\\";
 }
 
@@ -55,7 +55,7 @@ int main()
 
   const HWND window = window_create("blueprints", 1920, 1080);
 
-  gpu::context gpuctx = gpu::init({
+  gpu::init({
     .window = window,
     .num_msaa_samples = 2,
     .ds_target_format = DXGI_FORMAT_R8_UNORM});
