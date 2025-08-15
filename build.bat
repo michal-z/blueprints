@@ -64,6 +64,10 @@ src\lib.ixx ^
 src\gpu.ixx ^
 src\main.cpp
 
+:: Options that measure compile/link times:
+:: /Bt
+:: /d2cgsummary
+
 cl ^
 %CFLAGS% /Fe:"%NAME%.exe" /Fd:"%NAME%.pdb" /headerUnit "src/base.h=base.h.ifc" %SRC% ^
 /link ^
