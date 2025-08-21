@@ -8,6 +8,11 @@ set CONFIG=D
 
 set CFLAGS=/W4 /std:c++latest /GR- /EHsc /fp:except- /fp:precise /nologo
 
+:: Options that measure compile/link times:
+:: /Bt
+:: /d2cgsummary
+::set CFLAGS=%CFLAGS% /Bt
+
 if %CONFIG%==D set CFLAGS=%CFLAGS% /GS /Zi /Od /D"_DEBUG" /MTd /RTCs
 if %CONFIG%==R set CFLAGS=%CFLAGS% /GS- /O2 /Oi /Ot /Gy /MT /D"NDEBUG"
 
@@ -63,10 +68,6 @@ set SRC=^
 src\lib.ixx ^
 src\gpu.ixx ^
 src\main.cpp
-
-:: Options that measure compile/link times:
-:: /Bt
-:: /d2cgsummary
 
 cl ^
 %CFLAGS% /Fe:"%NAME%.exe" /Fd:"%NAME%.pdb" /headerUnit "src/base.h=base.h.ifc" %SRC% ^
